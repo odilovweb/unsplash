@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { add, remove } from "../redux/likeSlice";
 import { Link } from "react-router-dom";
 let API =
-  "https://api.unsplash.com/search/photos?client_id=M2PEZIk0kA2LyAXd8CNmaalrddhLnoEOMO5t_9WZZT8&page=1&query=features";
+  "https://api.unsplash.com/search/photos?client_id=M2PEZIk0kA2LyAXd8CNmaalrddhLnoEOMO5t_9WZZT8&page=1&query=cars";
 function PageList() {
   const { value: sliceValue } = useSelector((state) => state.like);
 
