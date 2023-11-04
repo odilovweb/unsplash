@@ -1,67 +1,15 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { FaDownload, FaHeart, FaUser } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { add, remove } from "../redux/likeSlice";
+import { remove } from "../redux/likeSlice";
+import { FaDownload, FaHeart, FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-let API =
-  "https://api.unsplash.com/search/photos?client_id=M2PEZIk0kA2LyAXd8CNmaalrddhLnoEOMO5t_9WZZT8&page=1&query=features";
-function PageList() {
-  const { value: sliceValue } = useSelector((state) => state.like);
-
+function LikedPhotos() {
   const dispatch = useDispatch();
-  const [value, setValue] = useState("");
-  const [data, setData] = useState("");
-  const handleSubmit = () => {
-    if (!value) {
-      API =
-        "https://api.unsplash.com/search/photos?client_id=M2PEZIk0kA2LyAXd8CNmaalrddhLnoEOMO5t_9WZZT8&page=1&query=features";
-    } else {
-      API = `https://api.unsplash.com/search/photos?client_id=M2PEZIk0kA2LyAXd8CNmaalrddhLnoEOMO5t_9WZZT8&page=1&query=${value}`;
-    }
-    const fetchData = async () => {
-      const newData = await axios.get(API).then((res) => {
-        return res.data.results;
-      });
-      setData(newData);
-    };
-    fetchData();
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      const newData = await axios.get(API).then((res) => {
-        return res.data.results;
-      });
-      setData(newData);
-    };
-    fetchData();
-  }, [API]);
+  const { value: data } = useSelector((state) => state.like);
   return (
-    <div>
-      <div className="pt-5">
-        <h1 className="text-2xl font-semibold mb-3 sm:text-3xl">
-          Search Any Image:
-        </h1>
-        <form
-          className="text-center"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <input
-            onChange={(e) => {
-              setValue(e.target.value);
-            }}
-            type="text"
-            className="input input-warning mr-5"
-          />
-          <button className="btn btn-ghost">Search</button>
-        </form>
-      </div>
-      <div className="grid gap-y-8 pt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-        {data &&
-          data.map((item) => {
+    <>
+      {data.length ? (
+        <div className="grid gap-y-8 pt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {data.map((item) => {
             return (
               <div key={item.id}>
                 <div>
@@ -72,22 +20,12 @@ function PageList() {
                     className="w-[300px] h-[300px] object-cover mx-auto"
                   />
                   <button
-                    className="text-xl mt-2"
+                    className="text-xl mt-2 flex gap-2 items-center"
                     onClick={() => {
-                      sliceValue.find((i) => {
-                        return i.id === item.id;
-                      })
-                        ? dispatch(remove(item))
-                        : dispatch(add(item));
+                      dispatch(remove(item));
                     }}
                   >
-                    {sliceValue.find((i) => {
-                      return i.id === item.id;
-                    }) ? (
-                      <FaHeart color="red" />
-                    ) : (
-                      <FaHeart color="grey" />
-                    )}
+                    Remove <FaHeart color="red" />
                   </button>
                 </div>
                 <dialog id={item.id} className="modal">
@@ -137,10 +75,15 @@ function PageList() {
                 </dialog>
               </div>
             );
-          })}
-      </div>
-    </div>
+          })}{" "}
+        </div>
+      ) : (
+        <h1 className="text-3xl text-center py-5 font-bold">
+          You don't have any liked photos :(
+        </h1>
+      )}
+    </>
   );
 }
 
-export default PageList;
+export default LikedPhotos;
