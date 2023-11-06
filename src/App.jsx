@@ -9,7 +9,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import RooterLayout from "./layouts/RooterLayout";
-import LikedPhotos from "./pages/likedPhotos";
+import LikedPhotos from "./pages/LikedPhotos";
 function App() {
   const routes = createBrowserRouter(
     createRoutesFromElements(
