@@ -8,6 +8,7 @@ const mode = localStorage.getItem("mode")
 const initialState = {
   value: localValue,
   mode,
+  user: null,
 };
 const html = document.documentElement;
 const likeSlice = createSlice({
@@ -37,7 +38,10 @@ const likeSlice = createSlice({
           document.documentElement.setAttribute("data-theme", "dark"));
       localStorage.setItem("mode", JSON.stringify(state.mode));
     },
+    addUser: (state, { payload }) => {
+      state.user = payload;
+    },
   },
 });
-export const { add, remove, dark } = likeSlice.actions;
+export const { add, remove, dark, addUser } = likeSlice.actions;
 export default likeSlice.reducer;
